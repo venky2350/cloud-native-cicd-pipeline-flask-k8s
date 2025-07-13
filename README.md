@@ -162,12 +162,6 @@ kubectl apply -f argocd/flask-app.yaml
 
 ---
 
-## 🎤 Interview Explanation Sample
-
-> I implemented a cloud-native CI/CD pipeline using GitHub Actions to automate the build and deployment of a Flask application. The pipeline runs a SonarQube quality scan, builds and pushes a Docker image to DockerHub, and updates the Helm values file with the new image tag. Argo CD automatically syncs the changes and deploys the app into Kubernetes. This project demonstrates my hands-on experience with containerization, continuous delivery, Helm templating, and GitOps workflows.
-
----
-
 ## 📝 Resolving Git Merge Conflict When Pushing to Remote Repository
 
 ### 🧩 Problem Overview
