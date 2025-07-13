@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📘 Cloud-Native CI/CD Pipeline for Flask App on Kubernetes
 
 This project demonstrates a complete **CI/CD pipeline for a Python Flask application** using:
@@ -161,3 +162,6 @@ kubectl apply -f argocd/flask-app.yaml
 
 ## 📌 License
 This project is open-source and free to use for learning and portfolio building.
+=======
+# cloud-native-cicd-pipeline-flask-k8s
+>>>>>>> 2e5a39a33e994d32a28e0401fea6b5e86e874025
