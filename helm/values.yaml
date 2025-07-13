@@ -1,0 +1,7 @@
+image:
+  repository: venkatesh384/flask-cicd-app
+  tag: "v1"
+
+service:
+  type: ClusterIP
+  port: 5000

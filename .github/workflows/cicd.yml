@@ -1,0 +1,55 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: flask-cicd-app
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r app/requirements.txt
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: app
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:${{ github.sha }} ./app
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:${{ github.sha }}
+
+      - name: Update image tag in values.yaml
+        run: |
+          sed -i "s/tag: .*/tag: \"${{ github.sha }}\"/" helm/values.yaml
+
+      - name: Commit updated Helm chart
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add helm/values.yaml
+          git commit -m "Update image tag to ${{ github.sha }}"
+          git push
